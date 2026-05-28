@@ -1,0 +1,52 @@
+{
+  "agent": {
+    "metrics_collection_interval": 60,
+    "run_as_user": "cwagent"
+  },
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/home/ubuntu/app/application.log",
+            "log_group_name": "/order-service/application",
+            "log_stream_name": "{instance_id}",
+            "timezone": "UTC",
+            "retention_in_days": 7
+          }
+        ]
+      }
+    }
+  },
+  "metrics": {
+    "namespace": "OrderService/Host",
+    "append_dimensions": {
+      "InstanceId": "${aws:InstanceId}"
+    },
+    "aggregation_dimensions": [["InstanceId"]],
+    "metrics_collected": {
+      "cpu": {
+        "measurement": [
+          {"name": "cpu_usage_idle", "rename": "CPU_IDLE", "unit": "Percent"},
+          {"name": "cpu_usage_user", "rename": "CPU_USER", "unit": "Percent"},
+          {"name": "cpu_usage_system", "rename": "CPU_SYSTEM", "unit": "Percent"}
+        ],
+        "totalcpu": true,
+        "metrics_collection_interval": 60
+      },
+      "mem": {
+        "measurement": [
+          {"name": "mem_used_percent", "rename": "MEM_USED_PERCENT", "unit": "Percent"}
+        ],
+        "metrics_collection_interval": 60
+      },
+      "disk": {
+        "measurement": [
+          {"name": "disk_used_percent", "rename": "DISK_USED_PERCENT", "unit": "Percent"}
+        ],
+        "resources": ["/"],
+        "metrics_collection_interval": 60
+      }
+    }
+  }
+}
